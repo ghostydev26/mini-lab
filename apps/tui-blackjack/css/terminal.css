@@ -1,0 +1,413 @@
+/**
+ * TUI Blackjack Terminal Layout and Components
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #020502;
+  color: var(--primary-color);
+  font-family: 'Share Tech Mono', 'VT323', Consolas, 'Courier New', monospace;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* 4:3 Aspect Ratio Container */
+.viewport-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  padding: 12px;
+  background: radial-gradient(circle at center, #071307 0%, #010401 100%);
+}
+
+.terminal-container {
+  position: relative;
+  /* Enforce strict 4:3 aspect ratio */
+  width: min(96vw, calc(94vh * (4 / 3)));
+  height: min(calc(96vw * (3 / 4)), 94vh);
+  max-width: 980px;
+  max-height: 735px;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--screen-bg);
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 0 20px var(--glow-color), inset 0 0 24px rgba(0, 0, 0, 0.85);
+  border-radius: 4px;
+  padding: clamp(10px, 2vmin, 20px);
+  overflow: hidden;
+  font-size: clamp(13px, 1.8vmin, 17px);
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+}
+
+/* Header Section */
+.terminal-header {
+  flex-shrink: 0;
+  margin-bottom: 12px;
+}
+
+.terminal-title {
+  font-size: 1.15em;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.terminal-status-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.95em;
+  color: var(--primary-color);
+  opacity: 0.95;
+  border-bottom: 1px dashed var(--dim-color);
+  padding-bottom: 8px;
+}
+
+.status-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.status-sep {
+  color: var(--dim-color);
+  margin: 0 4px;
+}
+
+.status-val {
+  font-weight: bold;
+}
+
+/* Play Area */
+.terminal-playfield {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 14px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Hand Section */
+.hand-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hand-label {
+  font-size: 1.05em;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hand-label .score-tag {
+  opacity: 0.9;
+  font-weight: normal;
+}
+
+.split-hands-container {
+  display: flex;
+  gap: 24px;
+}
+
+.hand-cards-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 86px;
+}
+
+.empty-cards-placeholder {
+  color: var(--dim-color);
+  font-size: 0.85em;
+  letter-spacing: 0.08em;
+  border: 1px dashed var(--dim-color);
+  padding: 10px 16px;
+  border-radius: 3px;
+  background-color: rgba(3, 10, 4, 0.4);
+}
+
+/* TUI Card Design matching reference */
+.tui-card {
+  width: 58px;
+  height: 82px;
+  border: 1.5px solid var(--primary-color);
+  border-radius: 3px;
+  background-color: rgba(3, 15, 6, 0.7);
+  box-shadow: 0 0 6px var(--glow-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4px 5px;
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tui-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 10px var(--glow-color);
+}
+
+.card-top {
+  font-size: 0.9em;
+  font-weight: bold;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.card-center {
+  font-size: 1.5em;
+  line-height: 1;
+  text-align: center;
+  margin: auto 0;
+}
+
+.card-bottom {
+  font-size: 0.9em;
+  font-weight: bold;
+  line-height: 1;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1px;
+}
+
+/* Suit colors */
+.tui-card.suit-red .suit-symbol {
+  color: var(--term-red) !important;
+  text-shadow: 0 0 6px rgba(255, 71, 87, 0.6);
+}
+
+.tui-card .card-top,
+.tui-card .card-bottom {
+  color: var(--primary-color);
+}
+
+/* Face-down / Hole Card ASCII matching reference */
+.card-facedown {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(2, 10, 4, 0.85);
+}
+
+.card-ascii-back {
+  font-family: 'VT323', Consolas, 'Courier New', monospace;
+  font-size: 1.15em;
+  line-height: 1.05;
+  color: var(--primary-color);
+  text-align: center;
+  white-space: pre;
+  letter-spacing: 0.05em;
+}
+
+/* Yellow / Amber Prompt Banner matching reference */
+.terminal-message-box {
+  border: 1.5px solid var(--primary-color);
+  background-color: rgba(4, 18, 8, 0.6);
+  padding: 8px 12px;
+  color: var(--prompt-color);
+  text-shadow: 0 0 4px var(--prompt-glow);
+  font-size: 0.98em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 0 6px var(--glow-color);
+  margin-top: 4px;
+}
+
+.message-prompt {
+  color: var(--prompt-color);
+  font-weight: bold;
+}
+
+.message-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Bottom Controls Section */
+.terminal-footer {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Action Buttons */
+.action-buttons-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.tui-btn {
+  background: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  padding: 4px 10px;
+  font-family: inherit;
+  font-size: 0.88em;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.12s ease;
+  letter-spacing: 0.05em;
+}
+
+.tui-btn:hover:not(:disabled) {
+  background: var(--primary-color);
+  color: var(--screen-bg);
+  box-shadow: 0 0 8px var(--glow-color);
+}
+
+.tui-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.tui-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  border-color: var(--dim-color);
+}
+
+.tui-btn.btn-deal {
+  border-color: var(--prompt-color);
+  color: var(--prompt-color);
+}
+
+.tui-btn.btn-deal:hover:not(:disabled) {
+  background: var(--prompt-color);
+  color: var(--screen-bg);
+  box-shadow: 0 0 10px var(--prompt-glow);
+}
+
+/* Command Prompt Input */
+.terminal-cmd-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  border-top: 1px dashed var(--dim-color);
+  padding-top: 6px;
+}
+
+.cmd-prompt-label {
+  color: var(--dim-color);
+  font-weight: bold;
+}
+
+.cmd-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--dim-color);
+  color: var(--primary-color);
+  font-family: inherit;
+  font-size: 1em;
+  outline: none;
+  padding: 2px 4px;
+}
+
+.cmd-input:focus {
+  border-bottom-color: var(--primary-color);
+  box-shadow: 0 1px 4px var(--glow-color);
+}
+
+.cmd-input::placeholder {
+  color: var(--dim-color);
+  opacity: 0.7;
+}
+
+/* System Toolbar (SFX, CRT, Theme) */
+.system-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78em;
+  color: var(--dim-color);
+  padding-top: 4px;
+}
+
+.sys-group {
+  display: flex;
+  gap: 12px;
+}
+
+.sys-toggle {
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.sys-toggle:hover {
+  color: var(--primary-color);
+  text-shadow: 0 0 3px var(--glow-color);
+}
+
+.active-hand-indicator {
+  border-bottom: 2px solid var(--prompt-color);
+  padding-bottom: 2px;
+}
+
+/* Help Dialog Modal */
+dialog.tui-modal {
+  margin: auto;
+  background: var(--screen-bg);
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 0 25px var(--glow-color);
+  padding: 16px 20px;
+  max-width: 500px;
+  width: 90%;
+  font-family: inherit;
+}
+
+dialog.tui-modal::backdrop {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.modal-header {
+  font-size: 1.1em;
+  font-weight: bold;
+  border-bottom: 1px dashed var(--primary-color);
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+.modal-content {
+  font-size: 0.9em;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.modal-content ul {
+  list-style-type: square;
+  padding-left: 20px;
+}

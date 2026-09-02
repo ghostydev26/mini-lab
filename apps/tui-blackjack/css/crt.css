@@ -1,0 +1,131 @@
+/**
+ * CRT and Retro Terminal Visual Effects
+ */
+
+:root {
+  --term-green: #33ff66;
+  --term-green-glow: rgba(51, 255, 102, 0.45);
+  --term-green-dim: #1d8036;
+  --term-bg: #050e06;
+  --term-bg-dark: #020603;
+  --term-amber: #ffb700;
+  --term-amber-glow: rgba(255, 183, 0, 0.45);
+  --term-red: #ff4757;
+  --term-cyan: #00e5ff;
+  --term-cyan-glow: rgba(0, 229, 255, 0.45);
+  --term-white: #e0e0e0;
+
+  /* Active theme colors */
+  --primary-color: var(--term-green);
+  --glow-color: var(--term-green-glow);
+  --dim-color: var(--term-green-dim);
+  --screen-bg: var(--term-bg);
+  --prompt-color: var(--term-amber);
+  --prompt-glow: var(--term-amber-glow);
+}
+
+/* Theme variations */
+body[data-theme="amber"] {
+  --primary-color: #ffb000;
+  --glow-color: rgba(255, 176, 0, 0.45);
+  --dim-color: #8f6200;
+  --screen-bg: #0f0a02;
+  --prompt-color: #33ff66;
+  --prompt-glow: rgba(51, 255, 102, 0.45);
+}
+
+body[data-theme="cyan"] {
+  --primary-color: #00f0ff;
+  --glow-color: rgba(0, 240, 255, 0.45);
+  --dim-color: #007680;
+  --screen-bg: #020a0d;
+  --prompt-color: #ffe600;
+  --prompt-glow: rgba(255, 230, 0, 0.45);
+}
+
+body[data-theme="classic"] {
+  --primary-color: #e8e8e8;
+  --glow-color: rgba(232, 232, 232, 0.35);
+  --dim-color: #707070;
+  --screen-bg: #0a0a0a;
+  --prompt-color: #ffd000;
+  --prompt-glow: rgba(255, 208, 0, 0.35);
+}
+
+/* CRT Screen Enclosure */
+.crt-screen {
+  position: relative;
+  background-color: var(--screen-bg);
+  color: var(--primary-color);
+  text-shadow: 0 0 4px var(--glow-color);
+  overflow: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Scanline and phosphor grain overlay */
+.crt-overlay {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background: 
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.28) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  background-size: 100% 3px, 6px 100%;
+  opacity: 0.85;
+}
+
+/* Subtle CRT curvature vignette */
+.crt-screen::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: radial-gradient(circle at center, transparent 65%, rgba(0, 0, 0, 0.55) 100%);
+  pointer-events: none;
+  z-index: 101;
+}
+
+/* Subtle refresh bar animation */
+.crt-scanbar {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(51, 255, 102, 0.03) 50%,
+    transparent 100%
+  );
+  animation: crt-scan 8s linear infinite;
+}
+
+@keyframes crt-scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* CRT toggle disabled state */
+body.no-crt .crt-overlay,
+body.no-crt .crt-scanbar,
+body.no-crt .crt-screen::before {
+  display: none !important;
+}
+
+body.no-crt .crt-screen {
+  text-shadow: none !important;
+}

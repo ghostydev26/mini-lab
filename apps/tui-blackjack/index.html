@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLACKJACK TERMINAL v1.0</title>
+  <link rel="stylesheet" href="css/crt.css" />
+  <link rel="stylesheet" href="css/terminal.css" />
+</head>
+<body data-theme="green">
+  <div class="viewport-wrapper">
+    <!-- 4:3 Aspect Ratio Retro CRT Terminal Screen -->
+    <div class="terminal-container crt-screen">
+      <div class="crt-overlay"></div>
+      <div class="crt-scanbar"></div>
+
+      <!-- Header matching reference image -->
+      <header class="terminal-header">
+        <div class="terminal-title">=== BLACKJACK TERMINAL v1.0 ===</div>
+        <div class="terminal-status-bar">
+          <div class="status-item">DECK: <span id="deck-val" class="status-val">52/52</span></div>
+          <span class="status-sep">|</span>
+          <div class="status-item">PHASE: <span id="phase-val" class="status-val">BETTING</span></div>
+          <span class="status-sep">|</span>
+          <div class="status-item">BET: <span id="bet-val" class="status-val">$0</span></div>
+          <span class="status-sep">|</span>
+          <div class="status-item">BANK: <span id="bank-val" class="status-val">$1000</span></div>
+        </div>
+      </header>
+
+      <!-- Playfield Table -->
+      <main class="terminal-playfield">
+        <!-- Dealer Hand -->
+        <section id="dealer-section" class="hand-section">
+          <div class="hand-label">
+            [DEALER HAND] <span id="dealer-score" class="score-tag">(Score: 0)</span>
+          </div>
+          <div id="dealer-cards" class="hand-cards-row">
+            <div class="empty-cards-placeholder">[ WAITING FOR BET &amp; DEAL ]</div>
+          </div>
+        </section>
+
+        <!-- Player Hand -->
+        <section id="player-section" class="hand-section">
+          <div class="hand-label">
+            [PLAYER HAND] <span id="player-score" class="score-tag">(Score: 0)</span>
+          </div>
+          <div id="player-cards" class="hand-cards-row">
+            <div class="empty-cards-placeholder">[ PLACE BET TO RECEIVE HAND ]</div>
+          </div>
+          <div id="split-container" class="split-hands-container" style="display: none;"></div>
+        </section>
+      </main>
+
+      <!-- Interactive Controls (Pop-up banner lowered right above the input/buttons) -->
+      <footer class="terminal-footer">
+        <!-- Notification Banner lowered right above action buttons & command input box -->
+        <section class="terminal-message-box" role="status">
+          <span class="message-prompt" aria-hidden="true">&gt;</span>
+          <span id="message-text" class="message-text" aria-live="polite">Place your bet and press [DEAL] or [Space].</span>
+        </section>
+
+        <div id="action-buttons" class="action-buttons-row">
+          <button class="tui-btn" data-action="bet-plus-5">[+$5]</button>
+          <button class="tui-btn" data-action="bet-plus-25">[+$25]</button>
+          <button class="tui-btn" data-action="bet-plus-50">[+$50]</button>
+          <button class="tui-btn" data-action="bet-plus-100">[+$100]</button>
+          <button class="tui-btn" data-action="bet-clear">[CLEAR $0]</button>
+          <button class="tui-btn" data-action="bet-all-in">[ALL-IN]</button>
+          <button class="tui-btn btn-deal" data-action="deal"><strong>[ DEAL (Space) ]</strong></button>
+        </div>
+
+        <div class="terminal-cmd-row">
+          <span class="cmd-prompt-label">CMD &gt;</span>
+          <input
+            type="text"
+            id="cmd-input"
+            class="cmd-input"
+            placeholder="Type 'hit', 'stand', 'double', 'bet 50', 'help' or use shortcuts..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </div>
+
+        <div class="system-toolbar">
+          <div class="sys-group">
+            <span id="stats-val">W:0 L:0 P:0 BJ:0</span>
+          </div>
+          <div class="sys-group">
+            <span id="sfx-toggle" class="sys-toggle" title="Toggle 8-bit sound effects">[SFX: ON]</span>
+            <span id="crt-toggle" class="sys-toggle" title="Toggle CRT scanlines & glow">[CRT: ON]</span>
+            <span id="theme-toggle" class="sys-toggle" title="Switch terminal phosphor color">[THEME: GREEN]</span>
+            <span id="reset-bank-toggle" class="sys-toggle" title="Reset bankroll to $1000">[RESET $]</span>
+            <span id="help-toggle" class="sys-toggle" title="View terminal help">[?]</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Help / Instructions Modal Dialog -->
+  <dialog id="help-modal" class="tui-modal">
+    <div class="modal-header">=== BLACKJACK TERMINAL COMMAND MANUAL ===</div>
+    <div class="modal-content">
+      <p><strong>KEYBOARD SHORTCUTS:</strong></p>
+      <ul>
+        <li><strong>[Space] or [Enter]</strong>: Deal hand / Start next round</li>
+        <li><strong>[H]</strong>: Hit (draw another card)</li>
+        <li><strong>[S]</strong>: Stand (hold current total)</li>
+        <li><strong>[D]</strong>: Double Down (double bet, get exactly 1 card)</li>
+        <li><strong>[P]</strong>: Split (split pair into 2 hands)</li>
+        <li><strong>[R]</strong>: Surrender (forfeit half bet)</li>
+        <li><strong>[1] - [4]</strong>: Add bet (+$5, +$25, +$50, +$100)</li>
+        <li><strong>[C]</strong>: Clear bet ($0) | <strong>[A]</strong>: All-In</li>
+        <li><strong>[T]</strong>: Cycle theme (Green, Amber, Cyan, Classic)</li>
+        <li><strong>[O]</strong>: Toggle CRT scanlines</li>
+        <li><strong>[M]</strong>: Toggle SFX audio</li>
+      </ul>
+      <br />
+      <p><strong>TERMINAL COMMANDS:</strong></p>
+      <p>Type in the CMD input: <code>hit</code>, <code>stand</code>, <code>double</code>, <code>split</code>, <code>deal</code>, <code>bet 100</code>, <code>allin</code>, <code>clear</code>, <code>reset</code>, <code>theme amber</code>, <code>sfx</code>, <code>crt</code>.</p>
+      <br />
+      <p><strong>RULES:</strong></p>
+      <ul>
+        <li>Blackjack pays 3:2.</li>
+        <li>Dealer stands on 17.</li>
+        <li>Shoe auto-reshuffles when cards run low.</li>
+      </ul>
+    </div>
+    <div style="text-align: right;">
+      <button id="close-help-btn" class="tui-btn">[CLOSE ESC]</button>
+    </div>
+  </dialog>
+
+  <!-- Universal script: runs reliably on both file:/// and http:// -->
+  <script src="js/app.js"></script>
+</body>
+</html>
