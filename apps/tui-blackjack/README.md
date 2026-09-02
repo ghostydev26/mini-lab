@@ -4,7 +4,6 @@ A retro terminal / TUI (Text User Interface) Blackjack game designed to run nati
 
 Inspired by classic mainframe and VT100/DOS terminal blackjack games.
 
-![Blackjack Terminal](screenshot.png)
 
 ## Features
 
