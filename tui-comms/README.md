@@ -166,9 +166,3 @@ Run the included verification test suite:
 ```bash
 npm test
 ```
-
----
-
-## 📄 License
-
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
