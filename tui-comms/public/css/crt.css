@@ -1,0 +1,194 @@
+/* ==========================================================================
+   ROBCO UNIFIED OS - CRT DISPLAY ENGINE (crt.css)
+   Authentic Green Phosphor CRT Monitor Emulation
+   ========================================================================== */
+
+:root {
+  --phosphor-green: #33ff33;
+  --phosphor-bright: #66ff66;
+  --phosphor-dim: #1a771a;
+  --phosphor-dark: #0f440f;
+  --phosphor-glow: rgba(51, 255, 51, 0.45);
+  --phosphor-glow-soft: rgba(51, 255, 51, 0.15);
+  --crt-bg: #050d05;
+  --crt-bezel: #161b16;
+  --crt-bezel-highlight: #283328;
+  --crt-bezel-shadow: #0a0e0a;
+  --scanline-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Red Alert Color Overrides */
+.alert-red {
+  --phosphor-green: #ff3333 !important;
+  --phosphor-bright: #ff6666 !important;
+  --phosphor-dim: #881a1a !important;
+  --phosphor-dark: #440f0f !important;
+  --phosphor-glow: rgba(255, 51, 51, 0.6) !important;
+  --phosphor-glow-soft: rgba(255, 51, 51, 0.2) !important;
+  --crt-bg: #140505 !important;
+  --crt-bezel: #251212 !important;
+  --crt-bezel-highlight: #441a1a !important;
+  --crt-bezel-shadow: #120404 !important;
+}
+
+/* Reset & Fullscreen Viewport */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #020502;
+  font-family: 'Share Tech Mono', 'Courier New', Courier, monospace;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--phosphor-green);
+  user-select: none;
+}
+
+/* Heavy Outer CRT Monitor Chassis / Bezel */
+.crt-container {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #182218 0%, #030803 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.alert-red.crt-container {
+  background: radial-gradient(circle at center, #2e1212 0%, #080202 100%) !important;
+  animation: crt-red-klaxon 1.2s infinite ease-in-out;
+}
+
+@keyframes crt-red-klaxon {
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 15px rgba(255, 30, 30, 0.3)); }
+  50% { filter: brightness(1.25) drop-shadow(0 0 35px rgba(255, 50, 50, 0.6)); }
+}
+
+/* Curved Glass Tube Surface - 4:3 Retro Aspect Ratio */
+.crt-screen {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  width: min(92vw, calc(90vh * 4 / 3));
+  height: min(90vh, calc(92vw * 3 / 4));
+  max-width: 1160px;
+  max-height: 870px;
+  background-color: var(--crt-bg);
+  border-radius: 28px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 
+    inset 0 0 80px rgba(0, 0, 0, 0.95),
+    inset 0 0 25px var(--phosphor-glow-soft),
+    0 0 0 12px var(--crt-bezel),
+    0 0 0 16px var(--crt-bezel-highlight),
+    0 25px 60px rgba(0, 0, 0, 0.95);
+  text-shadow: 0 0 3px var(--phosphor-green), 0 0 8px var(--phosphor-glow);
+  animation: crt-micro-flicker 0.15s infinite alternate;
+}
+
+/* Glass Optical Vignette and Spherical Curvature Reflection */
+.crt-screen::before {
+  content: " ";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: 
+    radial-gradient(ellipse at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.5) 88%, rgba(0, 0, 0, 0.85) 100%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, transparent 25%);
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* Horizontal Phosphor Scanline Mesh */
+.crt-screen::after {
+  content: " ";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    var(--scanline-color) 0px,
+    var(--scanline-color) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 51;
+  opacity: 0.85;
+}
+
+/* Subtle CRT Micro-Flicker */
+@keyframes crt-micro-flicker {
+  0%   { opacity: 0.985; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.978; }
+}
+
+/* CRT Power-on Boot Animation */
+.crt-power-on {
+  animation: crt-turn-on 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes crt-turn-on {
+  0% {
+    transform: scale(1, 0.002);
+    filter: brightness(25);
+    opacity: 0.1;
+  }
+  40% {
+    transform: scale(1, 0.005);
+    filter: brightness(15);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1, 1);
+    filter: brightness(3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1, 1);
+    filter: brightness(1);
+    opacity: 1;
+  }
+}
+
+/* CRT Screen Glitch / Pulse Effect */
+.screen-glitch {
+  animation: glitch-jitter 0.25s linear 1;
+}
+
+@keyframes glitch-jitter {
+  0% { transform: translate(0, 0); filter: hue-rotate(0deg) contrast(1); }
+  25% { transform: translate(-3px, 1px); filter: contrast(1.5) brightness(1.3); }
+  50% { transform: translate(3px, -2px); filter: contrast(2) brightness(0.8); }
+  75% { transform: translate(-2px, 0); filter: contrast(1.2); }
+  100% { transform: translate(0, 0); filter: none; }
+}
+
+/* Mobile CRT viewport optimizations */
+@media (max-width: 768px) {
+  .crt-container {
+    padding: max(2px, env(safe-area-inset-top)) max(2px, env(safe-area-inset-right)) max(2px, env(safe-area-inset-bottom)) max(2px, env(safe-area-inset-left));
+  }
+  .crt-screen {
+    aspect-ratio: auto;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: 
+      inset 0 0 35px rgba(0, 0, 0, 0.9),
+      inset 0 0 10px var(--phosphor-glow-soft),
+      0 0 0 4px var(--crt-bezel),
+      0 0 0 6px var(--crt-bezel-highlight);
+  }
+}
+

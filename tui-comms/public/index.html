@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#050d05">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>VAULT-COM // ROBCO OVERSEER TERMINAL</title>
+  <link rel="stylesheet" href="css/crt.css">
+  <link rel="stylesheet" href="css/terminal.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- CRT Monitor Physical Bezel Container -->
+  <div class="crt-container" id="crt-container">
+    <!-- Cathode Ray Phosphor Screen -->
+    <div class="crt-screen crt-power-on" id="crt-screen">
+      
+      <!-- Main Terminal Layout -->
+      <div class="terminal-wrapper">
+        
+        <!-- Header Status Bar -->
+        <header class="terminal-header">
+          <div class="header-banner">
+            <span>=== ROBCO INDUSTRIES UNIFIED OS (v1.0.4) ===</span>
+            <span>[ VAULT-COM OVERSEER NETWORK ]</span>
+          </div>
+          <div class="header-stats">
+            <div class="stat-item">
+              <span class="stat-label">STATUS:</span>
+              <span class="stat-val" id="stat-status">CONNECTING...</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">NODE:</span>
+              <span class="stat-val" id="stat-node">INITIALIZING</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">SUBNET:</span>
+              <span class="stat-val" id="stat-subnet">SCANNING</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">ACTIVE NODES:</span>
+              <span class="stat-val" id="stat-count">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">LATENCY:</span>
+              <span class="stat-val" id="stat-latency">--</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Body: Feed & Roster -->
+        <div class="terminal-body">
+          <!-- Transmission Feed -->
+          <section class="feed-panel">
+            <div class="panel-title">
+              <span>[ LIVE OVERSEER BROADCAST FEED ]</span>
+              <span style="font-size: 0.75rem; opacity: 0.8;">ROBCO ENCRYPTION: ACTIVE</span>
+            </div>
+            <div class="feed-logs" id="feed-logs">
+              <!-- Dynamically populated entries -->
+            </div>
+          </section>
+
+          <!-- Active Nodes Side Roster -->
+          <aside class="roster-panel">
+            <div class="panel-title">
+              <span>[ SUBNET NODES ]</span>
+            </div>
+            <div class="roster-list" id="roster-list">
+              <!-- Dynamically populated node items -->
+            </div>
+          </aside>
+        </div>
+
+        <!-- Action Button Bar -->
+        <nav class="action-bar">
+          <button class="btn-robco" id="btn-who">[ /WHO ]</button>
+          <button class="btn-robco" id="btn-relay">[ /RELAY ]</button>
+          <button class="btn-robco" id="btn-hack">[ /HACK ]</button>
+          <button class="btn-robco" id="btn-alert">[ /ALERT ]</button>
+          <button class="btn-robco" id="btn-clear">[ /CLEAR ]</button>
+          <button class="btn-robco" id="btn-guide">[ /GUIDE ]</button>
+          <button class="btn-robco" id="btn-audio">[ AUDIO: ON ]</button>
+        </nav>
+
+        <!-- Bottom Command Prompt Input Bar -->
+        <div class="prompt-panel">
+          <span class="prompt-prefix">CMD &gt;</span>
+          <input 
+            type="text" 
+            id="cmd-input" 
+            class="prompt-input" 
+            placeholder="TYPE MESSAGE OR /help..." 
+            autocomplete="off" 
+            spellcheck="false" 
+            autofocus
+          >
+          <button class="btn-robco btn-send" id="btn-send">[ SEND ]</button>
+        </div>
+
+      </div>
+
+      <!-- Fallout RobCo Hacking Minigame Overlay -->
+      <div class="hack-overlay" id="hack-overlay">
+        <div class="hack-header">
+          <div class="hack-title">ROBCO INDUSTRIES (TM) TERMLINK PROTOCOL</div>
+          <div class="hack-subtitle">ENTER PASSWORD TO OVERRIDE OVERSEER LOCK</div>
+          <div class="hack-attempts">
+            <span>ATTEMPTS REMAINING:</span>
+            <div id="hack-attempts"></div>
+          </div>
+        </div>
+
+        <div class="hack-game-area">
+          <div class="hack-memory-columns">
+            <div class="memory-column" id="hack-col-left"></div>
+            <div class="memory-column" id="hack-col-right"></div>
+          </div>
+
+          <div class="hack-sidebar">
+            <div class="hack-terminal-log" id="hack-terminal-log"></div>
+            <div class="hack-selected-word" id="hack-selected-word"></div>
+            <button class="btn-robco" id="hack-btn-close" style="margin-top: 12px; width: 100%;">
+              [ RETURN TO CONSOLE ]
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RobCo Field Manual & Guide Overlay -->
+      <div class="guide-overlay" id="guide-overlay">
+        <div class="guide-header">
+          <div class="guide-title">=== ROBCO FIELD MANUAL &amp; OVERSEER SURVIVAL GUIDE ===</div>
+          <button class="btn-robco" id="guide-btn-close">[ CLOSE MANUAL (Esc) ]</button>
+        </div>
+
+        <div class="guide-body">
+          
+          <div class="guide-section">
+            <div class="guide-section-title">[01] ZERO-CLOUD LOCAL NETWORK (LAN) ARCHITECTURE</div>
+            <p class="guide-text">
+              VAULT-COM is an air-gapped, zero-cloud communication terminal. It operates strictly within your local Wi-Fi / Ethernet subnet:
+              <br><br>
+              &bull; <strong>Zero External Servers:</strong> No cloud dependencies, no trackers, and no WAN leakage. Messages never touch the public internet.<br>
+              &bull; <strong>Ephemeral Memory:</strong> All communications reside in a 100-entry in-memory ring buffer on the host daemon. When the server powers down, all message history is permanently wiped.
+            </p>
+          </div>
+
+          <div class="guide-section">
+            <div class="guide-section-title">[02] HOW TO CONNECT FROM OTHER DEVICES</div>
+            <p class="guide-text">
+              Any phone, laptop, tablet, or handheld console on the <strong>same Wi-Fi or LAN</strong> can join instantly:
+              <br><br>
+              1. Ensure the secondary device is connected to the same Wi-Fi router.<br>
+              2. Open Chrome, Safari, Firefox, or Edge on the device.<br>
+              3. Navigate to either:<br>
+              &nbsp;&nbsp;&bull; <strong>http://vaultcom.local:8080</strong> (Automatic mDNS broadcast)<br>
+              &nbsp;&nbsp;&bull; <strong>http://&lt;HOST-IP&gt;:8080</strong> (e.g. check the Subnet IP printed in your terminal header)<br>
+              4. A unique RobCo terminal handle (e.g. <code>OVERSEER-1</code>, <code>VAULT-GUARD-2</code>) is auto-assigned upon handshake.
+            </p>
+          </div>
+
+          <div class="guide-section">
+            <div class="guide-section-title">[03] OVERSEER COMMAND INDEX</div>
+            <table class="guide-cmd-table">
+              <tr>
+                <td class="cmd-code">&lt;TEXT&gt; (Enter)</td>
+                <td>Broadcast open message across all active terminals on the subnet.</td>
+              </tr>
+              <tr>
+                <td class="cmd-code">/who</td>
+                <td>Query and list all active Vault nodes connected to the local subnet.</td>
+              </tr>
+              <tr>
+                <td class="cmd-code">/relay &lt;node-id&gt; &lt;msg&gt;</td>
+                <td>Send encrypted point-to-point transmission (or click any node in the right roster).</td>
+              </tr>
+              <tr>
+                <td class="cmd-code">/clear</td>
+                <td>Wipe current terminal screen display buffer.</td>
+              </tr>
+              <tr>
+                <td class="cmd-code">/broadcast-red [reason]</td>
+                <td>Trigger subnet-wide emergency red alert pulse and audible klaxon alarm.</td>
+              </tr>
+              <tr>
+                <td class="cmd-code">/broadcast-clear</td>
+                <td>Cancel red alert emergency state and restore standard green phosphor.</td>
+              </tr>
+              <tr>
+                <td class="cmd-code">/hack</td>
+                <td>Launch the RobCo Termlink password decryption puzzle.</td>
+              </tr>
+              <tr>
+                <td class="cmd-code">/handle &lt;new-callsign&gt;</td>
+                <td>Reassign your terminal callsign (e.g. <code>/handle CHIEF-99</code>).</td>
+              </tr>
+              <tr>
+                <td class="cmd-code">/guide</td>
+                <td>Open this Vault-Tec Field Manual.</td>
+              </tr>
+              <tr>
+                <td class="cmd-code">/sound</td>
+                <td>Toggle procedural mechanical keyboard clicks and teletype audio synthesis.</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="guide-section">
+            <div class="guide-section-title">[04] ROBCO HACKING PUZZLE MANUAL (BRACKET MATCHING)</div>
+            <p class="guide-text">
+              The hacking terminal replicates the classic Fallout terminal puzzle:
+              <br><br>
+              &bull; <strong>Password Likeness:</strong> When you pick a word, the terminal tells you how many letters match the secret password in both letter <em>and exact position</em>.<br>
+              &bull; <strong>The Secret Bracket-Matching Mechanic:</strong> Look through the memory garbage for matching pairs on the same row: <code>(...)</code>, <code>[...]</code>, <code>{...}</code>, or <code>&lt;...&gt;</code>.<br>
+              &bull; Clicking a bracket pair will either:
+              <br>&nbsp;&nbsp;1. <strong>REMOVE A DUD:</strong> Erases an incorrect word and replaces it with dots (<code>......</code>).
+              <br>&nbsp;&nbsp;2. <strong>REPLENISH TRIES:</strong> Resets your attempts remaining back to 4/4!
+              <br>&bull; Cracking the terminal unlocks temporary Overseer Administrator status and announces the bypass to all nodes!
+            </p>
+          </div>
+
+          <div class="guide-section">
+            <div class="guide-section-title">[05] AUDIO &amp; CRT EMULATION CONTROLS</div>
+            <p class="guide-text">
+              The display runs a hardware-accelerated CRT raster shader featuring phosphor bloom, 60Hz micro-flicker, scanline grid, and centered 4:3 cathode-ray tube proportions. All sounds (mechanical switch snaps, FSK teletype chirps, 60Hz transformer mains hum, and alarm klaxons) are 100% synthesized in real time using the Web Audio API without any audio file downloads.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="guide-footer">
+          <button class="btn-robco" id="guide-btn-bottom-close">[ RETURN TO OVERSEER CONSOLE ]</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/protocol.js"></script>
+  <script src="js/hack.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

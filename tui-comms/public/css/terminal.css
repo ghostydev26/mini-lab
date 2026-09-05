@@ -1,0 +1,681 @@
+/* ==========================================================================
+   ROBCO UNIFIED OS - TERMINAL UI STYLING (terminal.css)
+   Authentic Fallout RobCo Overseer TUI Layout & Components
+   ========================================================================== */
+
+/* Terminal Grid Layout */
+.terminal-wrapper {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 18px 24px;
+  overflow: hidden;
+}
+
+/* Header Status Bar */
+.terminal-header {
+  border-bottom: 2px solid var(--phosphor-green);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 1.05rem;
+}
+
+.header-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: var(--phosphor-bright);
+}
+
+.stat-item {
+  display: flex;
+  gap: 6px;
+}
+
+.stat-label {
+  color: var(--phosphor-dim);
+}
+
+.stat-val {
+  font-weight: bold;
+}
+
+/* Main Split Area (Feed + Node Roster) */
+.terminal-body {
+  flex: 1;
+  display: flex;
+  gap: 16px;
+  min-height: 0;
+  margin-bottom: 12px;
+}
+
+/* Transmission Feed Panel */
+.feed-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: 1px dashed var(--phosphor-dim);
+  background: rgba(5, 18, 5, 0.45);
+  padding: 12px 14px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.panel-title {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: var(--phosphor-bright);
+  border-bottom: 1px solid var(--phosphor-dark);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.feed-logs {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.95rem;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--phosphor-dim) transparent;
+}
+
+.feed-logs::-webkit-scrollbar {
+  width: 6px;
+}
+.feed-logs::-webkit-scrollbar-thumb {
+  background: var(--phosphor-dim);
+  border-radius: 3px;
+}
+
+/* Log Entry Styles */
+.log-entry {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+  word-break: break-word;
+  animation: teletype-fade 0.2s ease-out;
+}
+
+@keyframes teletype-fade {
+  from { opacity: 0; transform: translateX(-4px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.log-time {
+  color: var(--phosphor-dim);
+  font-size: 0.82rem;
+}
+
+.log-node {
+  font-weight: bold;
+  color: var(--phosphor-bright);
+}
+
+.log-node.is-self {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.log-content {
+  color: var(--phosphor-green);
+  flex: 1;
+}
+
+/* Specialized message types */
+.log-entry.level-SYSTEM {
+  color: #99ff99;
+  font-style: italic;
+}
+.log-entry.level-SYSTEM .log-content {
+  color: #aaffaa;
+}
+
+.log-entry.level-RELAY {
+  background: rgba(51, 255, 51, 0.08);
+  padding: 2px 6px;
+  border-left: 3px solid var(--phosphor-green);
+}
+.log-entry.level-RELAY .log-node {
+  color: #aaffff;
+}
+
+.log-entry.level-ALERT {
+  color: #ff5555;
+  background: rgba(255, 51, 51, 0.15);
+  border: 1px solid #ff3333;
+  padding: 4px 8px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+.log-entry.level-ALERT .log-content {
+  color: #ff8888;
+}
+
+.log-entry.level-ERROR {
+  color: #ff9999;
+}
+
+/* Side Roster Panel */
+.roster-panel {
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  border: 1px dashed var(--phosphor-dim);
+  background: rgba(5, 18, 5, 0.45);
+  padding: 12px 14px;
+  border-radius: 4px;
+}
+
+.roster-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--phosphor-dim) transparent;
+}
+
+.roster-item {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 6px;
+  border: 1px solid var(--phosphor-dark);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.roster-item:hover {
+  background: rgba(51, 255, 51, 0.15);
+}
+
+.roster-item.is-self {
+  border-color: var(--phosphor-green);
+  background: rgba(51, 255, 51, 0.08);
+}
+
+.roster-id {
+  font-weight: bold;
+}
+
+.roster-ip {
+  color: var(--phosphor-dim);
+  font-size: 0.75rem;
+}
+
+/* Action Button Bar */
+.action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.btn-robco {
+  background: transparent;
+  border: 1px solid var(--phosphor-dim);
+  color: var(--phosphor-green);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: bold;
+  padding: 5px 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+  user-select: none;
+  outline: none;
+}
+
+.btn-robco:hover {
+  background: var(--phosphor-green);
+  color: #050d05;
+  box-shadow: 0 0 10px var(--phosphor-green);
+}
+
+.btn-robco:active {
+  transform: translateY(1px);
+}
+
+/* Command Prompt Input Bar */
+.prompt-panel {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--phosphor-green);
+  background: rgba(0, 15, 0, 0.7);
+  padding: 8px 12px;
+  border-radius: 4px;
+  box-shadow: inset 0 0 15px rgba(51, 255, 51, 0.1);
+}
+
+.prompt-prefix {
+  font-weight: bold;
+  font-size: 1.05rem;
+  color: var(--phosphor-bright);
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+.prompt-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--phosphor-green);
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: bold;
+  outline: none;
+  caret-color: var(--phosphor-bright);
+  caret-shape: block;
+}
+
+/* ==========================================================================
+   ROBCO HACKING MINIGAME OVERLAY
+   ========================================================================== */
+.hack-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--crt-bg);
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.hack-overlay.active {
+  display: flex;
+}
+
+.hack-header {
+  border-bottom: 2px solid var(--phosphor-green);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.hack-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+}
+
+.hack-subtitle {
+  font-size: 0.85rem;
+  color: var(--phosphor-dim);
+}
+
+.hack-attempts {
+  margin: 8px 0;
+  font-size: 0.95rem;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.attempt-block {
+  display: inline-block;
+  width: 12px;
+  height: 16px;
+  background-color: var(--phosphor-green);
+}
+
+.hack-game-area {
+  flex: 1;
+  display: flex;
+  gap: 24px;
+  min-height: 0;
+}
+
+.hack-memory-columns {
+  flex: 2;
+  display: flex;
+  gap: 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1rem;
+  line-height: 1.35;
+  user-select: none;
+}
+
+.memory-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.memory-line {
+  display: flex;
+  gap: 10px;
+}
+
+.memory-address {
+  color: var(--phosphor-dim);
+}
+
+.memory-data {
+  letter-spacing: 2px;
+}
+
+.hack-char {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.hack-char.highlight {
+  background-color: var(--phosphor-green);
+  color: #050d05;
+}
+
+.hack-sidebar {
+  flex: 1;
+  border-left: 1px dashed var(--phosphor-dim);
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hack-terminal-log {
+  flex: 1;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hack-selected-word {
+  font-size: 1.1rem;
+  font-weight: bold;
+  height: 24px;
+  color: var(--phosphor-bright);
+}
+
+/* Audio toggle indicator */
+.audio-status-on {
+  color: var(--phosphor-bright);
+}
+.audio-status-off {
+  color: var(--phosphor-dim);
+}
+
+/* ==========================================================================
+   ROBCO FIELD MANUAL / GUIDE OVERLAY
+   ========================================================================== */
+.guide-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--crt-bg);
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  padding: 20px 24px;
+  overflow: hidden;
+}
+
+.guide-overlay.active {
+  display: flex;
+}
+
+.guide-header {
+  border-bottom: 2px solid var(--phosphor-green);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.guide-title {
+  font-size: 1.05rem;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+}
+
+.guide-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--phosphor-dim) transparent;
+}
+
+.guide-body::-webkit-scrollbar {
+  width: 6px;
+}
+.guide-body::-webkit-scrollbar-thumb {
+  background: var(--phosphor-dim);
+  border-radius: 3px;
+}
+
+.guide-section {
+  border: 1px dashed var(--phosphor-dim);
+  background: rgba(5, 20, 5, 0.45);
+  padding: 12px 14px;
+  border-radius: 4px;
+}
+
+.guide-section-title {
+  font-weight: bold;
+  color: var(--phosphor-bright);
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--phosphor-dark);
+  padding-bottom: 4px;
+  letter-spacing: 1px;
+}
+
+.guide-text {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--phosphor-green);
+}
+
+.guide-cmd-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+  font-size: 0.85rem;
+}
+
+.guide-cmd-table td {
+  padding: 4px 6px;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(51, 255, 51, 0.1);
+}
+
+.guide-cmd-table td.cmd-code {
+  font-weight: bold;
+  color: var(--phosphor-bright);
+  white-space: nowrap;
+  width: 220px;
+}
+
+.guide-footer {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-send {
+  margin-left: 6px;
+  background: rgba(51, 255, 51, 0.12);
+  border: 1px solid var(--phosphor-green);
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.btn-send:active {
+  background: var(--phosphor-green);
+  color: #050d05;
+}
+
+/* Mobile Responsiveness & Phone Ergonomics */
+@media (max-width: 768px) {
+  .terminal-wrapper {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+
+  .terminal-header {
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+  }
+
+  .header-banner {
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+  }
+
+  .header-stats {
+    font-size: 0.72rem;
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .stat-item {
+    gap: 3px;
+  }
+
+  /* Horizontal swipeable bracket buttons */
+  .action-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+  }
+
+  .action-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .action-bar .btn-robco {
+    flex-shrink: 0;
+    min-height: 38px;
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    touch-action: manipulation;
+  }
+
+  .terminal-body {
+    margin-bottom: 6px;
+  }
+
+  .feed-panel {
+    padding: 8px 10px;
+  }
+
+  .feed-logs {
+    font-size: 0.88rem;
+    gap: 5px;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .roster-panel {
+    display: none; /* Collapsed on phones; active roster viewable via /who */
+  }
+
+  /* Mobile Command Prompt Input (16px font-size prevents iOS auto-zoom) */
+  .prompt-panel {
+    padding: 6px 10px;
+  }
+
+  .prompt-prefix {
+    font-size: 0.95rem;
+    margin-right: 6px;
+  }
+
+  .prompt-input {
+    font-size: 16px; /* Essential: Prevents iOS Safari input zooming */
+    min-height: 24px;
+  }
+
+  .btn-send {
+    padding: 5px 8px;
+    font-size: 0.78rem;
+    min-height: 32px;
+  }
+
+  /* Mobile Hacking Minigame Adjustments */
+  .hack-overlay {
+    padding: 12px;
+  }
+
+  .hack-title {
+    font-size: 0.92rem;
+  }
+
+  .hack-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .hack-game-area {
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 12px;
+  }
+
+  .hack-memory-columns {
+    font-size: 0.75rem;
+    gap: 8px;
+    line-height: 1.3;
+  }
+
+  .memory-line {
+    gap: 6px;
+  }
+
+  .hack-sidebar {
+    border-left: none;
+    border-top: 1px dashed var(--phosphor-dim);
+    padding-left: 0;
+    padding-top: 10px;
+  }
+
+  /* Mobile Guide Overlay */
+  .guide-overlay {
+    padding: 12px;
+  }
+
+  .guide-title {
+    font-size: 0.9rem;
+  }
+
+  .guide-cmd-table td.cmd-code {
+    width: 140px;
+    font-size: 0.78rem;
+  }
+}
+
+
