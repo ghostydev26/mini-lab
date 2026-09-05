@@ -13,9 +13,10 @@
 > **A fun, retro-futuristic weekend project** inspired by the classic **Fallout RobCo Overseer terminal network**.  
 > An air-gapped, zero-cloud LAN web Terminal User Interface (TUI) that lets any phone, laptop, or desktop on the same Wi-Fi communicate in real time through an authentic green phosphor CRT monitor.
 
+![Gameplay Preview](./gameplay.png)
 ---
 
-## ⚡ Highlights & Features
+## Highlights & Features
 
 - 🟢 **Authentic 4:3 CRT Shader:** Monochromatic green phosphor palette (`#33ff33` on `#050d05`), curved glass monitor bezel, scanline raster overlay, subtle 60Hz micro-flicker, and phosphor text bloom.
 - 🔊 **100% Procedural Web Audio Synthesis:** Zero audio files or external sound assets needed. All mechanical switch clicks, FSK teletype chirps, 60Hz transformer power-on hum, 15.7kHz flyback whistle, and red alert klaxon alarms are synthesized in real time using the native Web Audio API.
@@ -28,7 +29,7 @@
 
 ---
 
-## 🖥️ Architecture
+## Architecture
 
 ```
                        [ Local Wi-Fi / LAN Subnet ]
@@ -56,7 +57,7 @@
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Prerequisites
 - **Node.js** (v18 or higher recommended)
@@ -95,7 +96,7 @@ You will see the RobCo startup banner:
 
 ---
 
-## 🕹️ Command Index
+## Command Index
 
 Type any message in the `CMD >` prompt and press **Enter** to broadcast to all nodes on the subnet, or use slash commands:
 
@@ -115,7 +116,7 @@ Type any message in the `CMD >` prompt and press **Enter** to broadcast to all n
 
 ---
 
-## 🧩 The RobCo Hacking Minigame Guide
+## The RobCo Hacking Minigame Guide
 
 Launch the puzzle at any time by typing `/hack` or clicking **`[ /HACK ]`**.
 
@@ -134,7 +135,7 @@ Launch the puzzle at any time by typing `/hack` or clicking **`[ /HACK ]`**.
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 vault-com/
@@ -160,7 +161,7 @@ vault-com/
 
 ---
 
-## 🧪 Testing
+## Testing
 
 Run the included verification test suite:
 ```bash
